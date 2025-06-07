@@ -1,0 +1,14 @@
+<!-- res/drawable/nav_item_normal_background.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+    <item android:bottom="0.5dp">
+        <shape>
+            <size android:height="1dp"/>
+            <solid android:color="#CCCCCC"/> <!-- لون الخط الفاصل -->
+        </shape>
+    </item>
+</layer-list>

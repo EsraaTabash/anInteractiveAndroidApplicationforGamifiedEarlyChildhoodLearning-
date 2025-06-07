@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/white"/> <!-- اللون الأبيض -->
+    <corners android:radius="40dp"/> <!-- حواف دائرية -->
+    <elevation android:value="4dp"/> <!-- الظل الخفيف -->
+</shape>

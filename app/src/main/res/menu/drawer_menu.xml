@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- المجموعة الأولى -->
+    <group android:id="@+id/group_main">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
+            android:checkable="true"
+        android:title="الرئيسيـــــة" />
+        <item
+            android:id="@+id/nav_profile"
+            android:checkable="true"
+            android:icon="@drawable/user"
+            android:title="الملـــــف الشخصـــــي" />
+<!--        <item-->
+<!--            android:id="@+id/nav_settings"-->
+<!--            android:icon="@drawable/setting"-->
+<!--            android:checkable="true"-->
+<!--            android:title="الإعــــــدادات" />-->
+    </group>
+
+    <!-- المجموعة الثانية -->
+    <group android:id="@+id/group_info">
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/share"
+            android:checkable="true"
+            android:title="مشاركــــــة التطبيــــــق" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/info"
+            android:checkable="true"
+            android:title="مــــــن نحــــــن" />
+        <item
+            android:id="@+id/nav_values"
+            android:icon="@drawable/star"
+            android:checkable="true"
+            android:title="قيّمنـــــا" />
+    </group>
+
+    <!-- المجموعة الثالثة -->
+    <group android:id="@+id/group_logout">
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/logout"
+            android:checkable="true"
+            android:title="تسجيـــــل الخـــــروج" />
+    </group>
+
+</menu>

@@ -1,0 +1,100 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/logoutLayout"
+    android:layout_width="300dp"
+    android:background="@drawable/card22"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal">
+
+    <!-- Dialog with Card background -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dialog"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:elevation="4dp"
+        android:padding="16dp">
+
+        <!-- Icon Image for logout -->
+        <ImageView
+            android:id="@+id/logoutIcon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:src="@drawable/logout2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/logoutTitle" />
+
+        <!-- Title of logout -->
+        <TextView
+            android:id="@+id/logoutTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/zain_bold"
+            android:gravity="center_horizontal"
+            android:text="تسجيـــل خـــروج"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/logoutIcon" />
+
+        <!-- Description of logout -->
+        <TextView
+            android:id="@+id/logoutDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/white"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/zain_regular"
+            android:gravity="center_horizontal"
+            android:text="هل أنت متأكد أنك تريد \n تسجيل الخروج؟"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/doneBtn"
+            app:layout_constraintTop_toBottomOf="@id/logoutTitle" />
+
+        <!-- Cancel Button -->
+        <Button
+            android:id="@+id/cancelBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#10C8ED"
+            android:fontFamily="@font/zain_bold"
+            android:text="إلغاء"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:cornerRadius="100dp"
+            app:layout_constraintEnd_toStartOf="@id/doneBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/logoutDesc" />
+
+        <!-- Logout Done Button -->
+        <Button
+            android:id="@+id/doneBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="#FFFFFF"
+            android:fontFamily="@font/zain_bold"
+            android:text=" تسجيل الخروج"
+            android:textColor="#0098CB"
+            android:textSize="14sp"
+            app:cornerRadius="100dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/cancelBtn"
+            app:layout_constraintTop_toBottomOf="@id/logoutDesc" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

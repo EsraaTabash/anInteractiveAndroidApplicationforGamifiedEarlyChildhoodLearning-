@@ -1,0 +1,5 @@
+<!-- res/drawable/drawer_item_selected_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#DDEEFF" /> <!-- لون الخلفية الفاتحة -->
+    <corners android:radius="8dp" />
+</shape>

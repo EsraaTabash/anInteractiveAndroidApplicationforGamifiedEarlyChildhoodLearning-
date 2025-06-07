@@ -1,0 +1,19 @@
+<!-- res/drawable/button_space_style.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="#1A237E" />
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#081152"
+                android:centerColor="#246EAF"
+                android:endColor="#2B6FAB"
+                android:angle="90"/>
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
+</selector>

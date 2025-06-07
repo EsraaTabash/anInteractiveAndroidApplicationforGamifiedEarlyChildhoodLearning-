@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/welcome"
+    tools:context=".SelectAgeActivity">
+
+    <!-- القمر -->
+    <ImageView
+        android:id="@+id/moon"
+        android:layout_width="398dp"
+        android:layout_height="314dp"
+        android:layout_marginEnd="160dp"
+        android:src="@drawable/moon2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.609" />
+
+    <!-- العنوان -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/marhey"
+        android:gravity="center"
+        android:text="اختر \nالفئة العمرية"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="32sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="170dp" />
+
+    <!-- كلمة "العمر" -->
+    <TextView
+        android:id="@+id/age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="العمر"
+        android:textColor="#D9D9D9"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:fontFamily="@font/zain_regular"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="50dp" />
+
+    <!-- Number Picker -->
+    <com.shawnlin.numberpicker.NumberPicker
+        android:id="@+id/agePicker"
+        android:layout_width="152dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/age"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:np_min="0"
+        app:np_max="2"
+        app:np_dividerColor="@color/white"
+        app:np_selectedTextColor="@color/white"
+        app:np_selectedTextSize="16sp"
+        app:np_textColor="@color/white"
+        app:np_textSize="16sp"
+        app:np_height="180dp"
+        app:np_width="64dp"
+        app:np_typeface="@font/montserrat_alternates_semi_bold" />
+
+
+
+    <!-- شخصية كرتونية -->
+    <ImageView
+        android:id="@+id/character2"
+        android:layout_width="105dp"
+        android:layout_height="117dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="-10dp"
+        android:src="@drawable/character2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1" />
+
+    <!-- زر البداية -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btnContainer"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintTop_toBottomOf="@id/agePicker"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/btnStart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/btn2"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/textOnButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="لنسافر معاً"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:fontFamily="@font/marhey"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

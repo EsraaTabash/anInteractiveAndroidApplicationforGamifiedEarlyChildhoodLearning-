@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/welcome"
+    tools:context=".CreateAccountActivity">
+    <!-- زر تخطي -->
+<!--    <TextView-->
+<!--        android:id="@+id/skip"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:alpha="0.6"-->
+<!--        android:fontFamily="@font/zain_regular"-->
+<!--        android:text="تخطي "-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="16sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.05"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!-- صاروخ لوتي -->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/rocket"
+        android:layout_width="116dp"
+        android:layout_height="142dp"
+        android:layout_marginTop="25dp"
+        android:rotation="90"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="rocket.json"
+        app:lottie_loop="true" />
+
+<!--    &lt;!&ndash; حقل الاسم &ndash;&gt;-->
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/create_nameFieldLayout"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="50dp"-->
+<!--        android:layout_marginEnd="50dp"-->
+<!--        app:errorTextAppearance="@style/MyErrorText"-->
+<!--        app:hintEnabled="false"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/rocket">-->
+
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:id="@+id/create_nameInput"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@drawable/name_field_background"-->
+<!--            android:fontFamily="@font/zain_regular"-->
+<!--            android:hint="اكتب الاسم"-->
+<!--            android:inputType="text"-->
+<!--            android:paddingHorizontal="15dp"-->
+<!--            android:paddingVertical="15dp"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textColorHint="#D9D9D9"-->
+<!--            android:textDirection="rtl"-->
+<!--            android:textSize="16sp" />-->
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+    <!-- البريد الإلكتروني -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/create_emailFieldLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        app:errorTextAppearance="@style/MyErrorText"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rocket">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/create_emailInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/name_field_background"
+            android:fontFamily="@font/zain_regular"
+            android:hint="البريد الالكتروني"
+            android:inputType="textEmailAddress"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="15dp"
+            android:textColor="@color/white"
+            android:textColorHint="#D9D9D9"
+            android:textDirection="rtl"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- كلمة المرور -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/create_passwordFieldLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="50dp"
+        app:errorTextAppearance="@style/MyErrorText"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/create_emailFieldLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/create_passwordInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/name_field_background"
+            android:fontFamily="@font/zain_regular"
+            android:gravity="end"
+            android:hint="كلمة المرور"
+            android:inputType="textPassword"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="15dp"
+            android:textColor="@color/white"
+            android:textColorHint="#D9D9D9"
+            android:textDirection="rtl"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- تأكيد كلمة المرور -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/create_confirmPasswordFieldLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="50dp"
+        app:errorTextAppearance="@style/MyErrorText"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/create_passwordFieldLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/create_confirmPasswordInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/name_field_background"
+            android:fontFamily="@font/zain_regular"
+            android:gravity="end"
+            android:hint="تأكيد كلمة المرور"
+            android:inputType="textPassword"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="15dp"
+            android:textColor="@color/white"
+            android:textColorHint="#D9D9D9"
+            android:textDirection="rtl"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- زر إنشاء الحساب -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/createAccountBtn"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/create_confirmPasswordFieldLayout">
+
+        <ImageView
+            android:id="@+id/btnStart"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/gradient_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textOnButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/marhey"
+            android:text="انشــــاء حســـــاب جديــــد"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <!-- دليل أو -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/orDividerGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@id/createAccountBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/left_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/left_line"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/orText"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/orText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/zain_bold"
+            android:text="أو"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:alpha="0.6"
+            app:layout_constraintStart_toEndOf="@id/left_line"
+            app:layout_constraintEnd_toStartOf="@id/right_line"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <ImageView
+            android:id="@+id/right_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/right_line"
+            app:layout_constraintStart_toEndOf="@id/orText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- النص -->
+<!--    <TextView-->
+<!--        android:id="@+id/textView"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:alpha="0.6"-->
+<!--        android:fontFamily="@font/zain_bold"-->
+<!--        android:text=" انشاء حساب باستخدام "-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="16sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/orDividerGroup" />-->
+
+<!--    &lt;!&ndash; الأزرار الاجتماعية &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:id="@+id/socialContainer"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="12dp"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/textView">-->
+
+<!--        <FrameLayout-->
+<!--            android:id="@+id/google"-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:background="@drawable/circle_bg">-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="32dp"-->
+<!--                android:layout_height="32dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:contentDescription="google"-->
+<!--                android:src="@drawable/google" />-->
+<!--        </FrameLayout>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/orText2"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginHorizontal="12dp"-->
+<!--            android:alpha="0.6"-->
+<!--            android:fontFamily="@font/zain_bold"-->
+<!--            android:gravity="center"-->
+<!--            android:text="أو"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="18sp" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/facebook"-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:contentDescription="Facebook"-->
+<!--            android:scaleType="fitCenter"-->
+<!--            android:src="@drawable/facebook" />-->
+<!--    </LinearLayout>-->
+
+    <!-- هل لديك حساب؟ -->
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:alpha="0.6"
+        android:fontFamily="@font/zain_regular"
+        android:text="هل لديك حساب بالفعل ؟ "
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/orDividerGroup" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        android:id="@+id/loadingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="#80000000"
+        android:clickable="true"
+        android:focusable="true">
+
+        <!-- TextView فوق -->
+        <TextView
+            android:id="@+id/loadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="140dp"
+            android:alpha="0.6"
+            android:fontFamily="@font/zain_bold"
+            android:text="الرجـــاء الانتظــــار.. "
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <!-- LottieAnimationView في المنتصف -->
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loadingRocket"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:rotation="90"
+            app:lottie_fileName="rocket.json"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true" />
+
+    </FrameLayout>
+</FrameLayout>

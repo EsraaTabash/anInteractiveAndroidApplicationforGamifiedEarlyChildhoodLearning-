@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <ImageView
+        android:id="@+id/plants"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="70dp"
+        android:src="@drawable/plants" />
+
+    <!-- البوكس بجانب القلم -->
+    <ImageView
+        android:id="@+id/std1"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="start|top"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/std_svg"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/card1"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="start|top"
+        android:layout_marginStart="80dp"
+        android:src="@drawable/card1"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/card2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="end|top"
+        android:src="@drawable/card22"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/card3"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="130dp"
+        android:src="@drawable/card3"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/card4"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center|end"
+        android:layout_marginBottom="130dp"
+        android:src="@drawable/card4"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/card5"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/card5"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/card6"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="bottom|center"
+        android:src="@drawable/card6"
+        android:visibility="invisible" />
+</FrameLayout>

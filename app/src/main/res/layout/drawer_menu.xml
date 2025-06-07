@@ -1,0 +1,139 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@android:color/white">
+
+    <!-- الهيدر -->
+    <include layout="@layout/nav_header" />
+
+    <!-- الأزرار -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- زر الرئيسية -->
+        <Button
+            android:id="@+id/btn_home"
+            style="@style/DrawerButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginVertical="8dp"
+            android:text="الرئيسيـــــة"
+            android:drawableStart="@drawable/home"
+            android:drawablePadding="12dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:textColor="#2BD5B7"
+            android:textSize="16sp"
+            android:background="@drawable/drawer_item_background"
+            android:fontFamily="@font/zain_regular" />
+
+        <!-- زر الملف الشخصي -->
+        <Button
+            android:id="@+id/btn_profile"
+            style="@style/DrawerButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginVertical="8dp"
+            android:text="الملـــــف الشخصـــــي"
+            android:drawableStart="@drawable/user"
+            android:drawablePadding="12dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:textColor="#2BD5B7"
+            android:textSize="16sp"
+            android:background="@drawable/drawer_item_background"
+            android:fontFamily="@font/zain_regular" />
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#2BD5B7" />
+
+<!--        &lt;!&ndash; زر الإعدادات &ndash;&gt;-->
+<!--        <Button-->
+<!--            android:id="@+id/btn_settings"-->
+<!--            style="@style/DrawerButtonStyle"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="56dp"-->
+<!--            android:layout_marginVertical="8dp"-->
+<!--            android:text="الإعــــــدادات"-->
+<!--            android:drawableStart="@drawable/settings"-->
+<!--            android:drawablePadding="12dp"-->
+<!--            android:paddingStart="24dp"-->
+<!--            android:paddingEnd="16dp"-->
+<!--            android:paddingTop="20dp"-->
+<!--            android:paddingBottom="20dp"-->
+<!--            android:textColor="#2BD5B7"-->
+<!--            android:textSize="16sp"-->
+<!--            android:background="@drawable/drawer_item_background"-->
+<!--            android:fontFamily="@font/zain_regular" />-->
+
+        <!-- زر مشاركة التطبيق -->
+        <Button
+            android:id="@+id/btn_share"
+            style="@style/DrawerButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginVertical="8dp"
+            android:text="مشاركــــــة التطبيــــــق"
+            android:drawableStart="@drawable/share"
+            android:drawablePadding="12dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:textColor="#2BD5B7"
+            android:textSize="16sp"
+            android:background="@drawable/drawer_item_background"
+            android:fontFamily="@font/zain_regular" />
+
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#2BD5B7" />
+
+        <!-- زر من نحن -->
+
+        <!-- زر قيّمنا -->
+        <Button
+            android:id="@+id/btn_rate"
+            style="@style/DrawerButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginVertical="8dp"
+            android:text="قيّمنـــــا"
+            android:drawableStart="@drawable/star"
+            android:drawablePadding="12dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:textColor="#2BD5B7"
+            android:textSize="16sp"
+            android:background="@drawable/drawer_item_background"
+            android:fontFamily="@font/zain_regular" />
+
+
+        <!-- زر تسجيل الخروج -->
+        <Button
+            android:id="@+id/btn_logout"
+            style="@style/DrawerButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginVertical="8dp"
+            android:text="تسجيـــــل الخـــــروج"
+            android:drawableStart="@drawable/logout"
+            android:drawablePadding="12dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:textColor="#2BD5B7"
+            android:textSize="16sp"
+            android:background="@drawable/drawer_item_background"
+            android:fontFamily="@font/zain_regular" />
+
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#2BD5B7" />
+    </LinearLayout>
+</LinearLayout>

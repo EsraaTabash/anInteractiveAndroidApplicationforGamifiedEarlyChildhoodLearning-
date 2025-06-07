@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">final2</string>
+    <string name="open_drawer">فتح القائمة</string>
+    <string name="close_drawer">إغلاق القائمة</string>
+    <string name="game_view_content_description">Game view</string>
+    <string name="default_web_client_id">265265985981-t7v1tjp63a2joktpsh3rqga8k5on78a6.apps.googleusercontent.com</string>
+
+</resources>
