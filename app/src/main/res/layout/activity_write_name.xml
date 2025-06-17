@@ -25,7 +25,7 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="220dp"
         android:fontFamily="@font/marhey"
         android:gravity="center"
         android:text="ما هو اسمك ؟"
@@ -37,19 +37,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- كلمة "العمر" -->
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:fontFamily="@font/zain_regular"
-        android:text="الاسم"
-        android:textAlignment="center"
-        android:textColor="#D9D9D9"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title" />
+<!--    <TextView-->
+<!--        android:id="@+id/name"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="50dp"-->
+<!--        android:fontFamily="@font/zain_regular"-->
+<!--        android:text="الاسم"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textColor="#D9D9D9"-->
+<!--        android:textSize="16sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/title" />-->
 
 
     <!-- شخصية كرتونية -->
@@ -73,12 +73,12 @@
         app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name">
+        app:layout_constraintTop_toBottomOf="@id/title">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/select_nameInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:background="@drawable/name_field_background"
             android:fontFamily="@font/zain_regular"
             android:hint="اكتب الاسم"
@@ -88,7 +88,7 @@
             android:textColor="@color/white"
             android:textColorHint="#D9D9D9"
             android:textDirection="rtl"
-            android:textSize="14sp"
+            android:textSize="20sp"
             app:hintEnabled="false" />
     </com.google.android.material.textfield.TextInputLayout>
     <!-- زر البداية -->
@@ -97,7 +97,7 @@
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="190dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,6 +1,7 @@
 package com.example.final3
 
 import android.animation.*
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
@@ -13,25 +14,30 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 
 class WelcomeActivity : AppCompatActivity() {
+    override fun onPause() {
+        super.onPause()
+        GameMusicService.pauseMusic()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        GameMusicService.resumeMusic()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
-        supportActionBar?.hide() // إخفاء شريط العنوان
+        supportActionBar?.hide()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        // تحديد العناصر من الواجهة
         val textView1: TextView = findViewById(R.id.textView1)
         val character1: ImageView = findViewById(R.id.character1)
-        val character2: ImageView = findViewById(R.id.character2)
         val firstStone: ImageView = findViewById(R.id.first_stone)
         val leftStone: ImageView = findViewById(R.id.left_stone)
         val rightStone: ImageView = findViewById(R.id.right_stone)
         val lastStone: ImageView = findViewById(R.id.last_stone)
         val moon: ImageView = findViewById(R.id.moon)
-        val textView2: TextView = findViewById(R.id.textView2)
 
-        // جعل textView1 و character1 مرئيين في البداية
         textView1.visibility = View.VISIBLE
         character1.visibility = View.VISIBLE
 
@@ -54,7 +60,6 @@ class WelcomeActivity : AppCompatActivity() {
 
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
-                    // إخفاء textView1 و character1 بعد نهاية الحركة
                     fadeOutCharacter1AndText(textView1, character1)
                 }
             })
@@ -62,7 +67,6 @@ class WelcomeActivity : AppCompatActivity() {
         moveSet.start()
     }
 
-    // المرحلة 2: إخفاء character1 و textView1 تدريجيًا
     private fun fadeOutCharacter1AndText(textView1: TextView, character1: ImageView) {
         val fadeOutTextView1 = ObjectAnimator.ofFloat(textView1, "alpha", 1f, 0f)
         val fadeOutCharacter1 = ObjectAnimator.ofFloat(character1, "alpha", 1f, 0f)
@@ -82,7 +86,6 @@ class WelcomeActivity : AppCompatActivity() {
         }
     }
 
-    // المرحلة 2: تحريك العناصر إلى المواقع الجديدة
     private fun startStage2() {
         val textView2: TextView = findViewById(R.id.textView2)
         val character2: ImageView = findViewById(R.id.character2)
@@ -92,7 +95,6 @@ class WelcomeActivity : AppCompatActivity() {
         val rightStone: ImageView = findViewById(R.id.right_stone)
         val lastStone: ImageView = findViewById(R.id.last_stone)
 
-        // إظهار العناصر الجديدة
         textView2.visibility = View.VISIBLE
         character2.visibility = View.VISIBLE
         moon.visibility = View.VISIBLE
@@ -143,7 +145,6 @@ class WelcomeActivity : AppCompatActivity() {
         }
     }
 
-    // المرحلة 3: تحريك العناصر إلى المواقع النهائية
     private fun startStage3() {
         val character1: ImageView = findViewById(R.id.character1)
         val character2: ImageView = findViewById(R.id.character2)
@@ -154,12 +155,10 @@ class WelcomeActivity : AppCompatActivity() {
         val rightStone: ImageView = findViewById(R.id.right_stone)
         val lastStone: ImageView = findViewById(R.id.last_stone)
 
-        // ✅ تأكد من أن character1 مرئي
         character1.visibility = View.VISIBLE
         character1.alpha = 1f
         character1.bringToFront()
 
-        // 🎯 تحريك character1 على المحور X ثم المحور Y
         val moveCharacter1X = ObjectAnimator.ofFloat(character1, "translationX", -300f).apply {
             duration = 1200
         }
@@ -189,24 +188,11 @@ class WelcomeActivity : AppCompatActivity() {
         val moveLastStoneX = ObjectAnimator.ofFloat(lastStone, "translationX", -100f)
         val moveLastStoneY = ObjectAnimator.ofFloat(lastStone, "translationY", 0f)
 
-        // ✅ تشغيل حركة X أولًا، ثم Y بعدها
-//        moveCharacter1X.addListener(object : Animator.AnimatorListener {
-//            override fun onAnimationStart(animation: Animator) {
-//                Log.d("Character1", "Animation started.")
-//            }
-//
-//            override fun onAnimationEnd(animation: Animator) {
-//                moveCharacter1Y.start() // تشغيل حركة Y بعد انتهاء X
-//            }
-//
-//            override fun onAnimationCancel(animation: Animator) {}
-//            override fun onAnimationRepeat(animation: Animator) {}
-//        })
 
-        // ✅ إعداد جميع الحركات في AnimatorSet
+
         AnimatorSet().apply {
             playTogether(
-                moveCharacter1X,moveCharacter1Y,
+                moveCharacter1X, moveCharacter1Y,
                 moveCharacter2X, moveCharacter2Y,
                 moveTextView2X, moveTextView2Y,
                 moveMoonX, moveMoonY,
@@ -219,10 +205,9 @@ class WelcomeActivity : AppCompatActivity() {
             interpolator = DecelerateInterpolator()
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
-                    // الانتقال إلى HelloActivity عند انتهاء الحركات
                     val intent = Intent(this@WelcomeActivity, HelloActivity::class.java)
                     startActivity(intent)
-                    finish() // اختياري: لإنهاء WelcomeActivity ومنع الرجوع إليها عند الضغط على زر الرجوع
+                    finish()
                 }
             })
             start()

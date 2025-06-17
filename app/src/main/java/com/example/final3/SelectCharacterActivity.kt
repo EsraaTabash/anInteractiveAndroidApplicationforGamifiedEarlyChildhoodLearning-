@@ -2,107 +2,149 @@ package com.example.final3
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.widget.GridView
-import android.widget.ImageView
-import android.widget.Toast
+import android.util.Log
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.airbnb.lottie.LottieAnimationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SelectCharacterActivity : AppCompatActivity() {
 
-    private val characterNumberToDrawable = mapOf(
-        1 to R.drawable.ch1,
-        2 to R.drawable.ch2,
-        3 to R.drawable.ch3,
-        4 to R.drawable.ch4,
-        5 to R.drawable.ch5,
-        6 to R.drawable.ch6
-    )
-
-    private var selectedDrawable: Int = -1
+    private var selectedCharacterId: Int = -1
+    private lateinit var prefs: SharedPreferences
     private lateinit var userType: String
+
+    // شاشة التحميل
+    private lateinit var loadingOverlaylayout: FrameLayout
+    private lateinit var rocket2: LottieAnimationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_character)
-
         supportActionBar?.hide()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        val prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        userType = prefs.getString("user_type", "under6") ?: "under6"
+        // ربط الـ SharedPreferences
+        prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        userType = getUserPrefs("user_type", "under6")
 
+        // ربط مكونات التحميل
+        loadingOverlaylayout = findViewById(R.id.select_loadingOverlaylayout)
+        rocket2 = findViewById(R.id.select_loadingRocket)
+
+        setupCharacterGrid()
+        setupStartButton()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        GameMusicService.pauseMusic()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        GameMusicService.resumeMusic()
+    }
+
+    private fun getUserPrefs(key: String, defaultValue: String): String {
+        return prefs.getString(key, defaultValue) ?: defaultValue
+    }
+
+    private fun setupCharacterGrid() {
         val gridView: GridView = findViewById(R.id.characterGrid)
-        val characterImages = characterNumberToDrawable.values.toIntArray()
-
-        val adapter = CharactersAdapter(this, characterImages) { selectedResId ->
-            selectedDrawable = selectedResId
+        val adapter = CharactersAdapter(this, selectedCharacterId) { selectedId ->
+            selectedCharacterId = selectedId
         }
         gridView.adapter = adapter
+    }
 
+    private fun setupStartButton() {
         val btnStart: ImageView = findViewById(R.id.btnStart)
         btnStart.setOnClickListener {
-            if (selectedDrawable == -1) {
+            if (selectedCharacterId == -1) {
                 Toast.makeText(this, "يرجى اختيار شخصية أولاً", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val editor = prefs.edit()
-            editor.putInt("user_character", selectedDrawable)
+            saveCharacterSelectionToPrefs()
+            saveUserToFirestoreOrNavigate()
+        }
+    }
 
+    private fun saveCharacterSelectionToPrefs() {
+        prefs.edit().apply {
+            putInt("character_id", selectedCharacterId)
             if (userType == "under6") {
-                val nameByDrawable = mapOf(
-                    R.drawable.ch1 to "ربـــانــزل",
-                    R.drawable.ch2 to "مــوانــا",
-                    R.drawable.ch3 to "الصديق المرح",
-                    R.drawable.ch4 to "البطل الشجاع",
-                    R.drawable.ch5 to "النجمة المضيئة",
-                    R.drawable.ch6 to "الفتى الذكي"
-                )
-                val defaultName = nameByDrawable[selectedDrawable] ?: "شخصية افتراضية"
-                editor.putString("user_name", defaultName)
-//                editor.putString("user_email", "")
+                putString("user_name", CharacterUtils.getNameByCharacterId(selectedCharacterId))
             }
+            apply()
+        }
+    }
 
-            editor.apply()
+    private fun saveUserToFirestoreOrNavigate() {
+        showLoading()
 
-            // 🔥 حفظ البيانات في Firestore
-            val firebaseUser = FirebaseAuth.getInstance().currentUser
-            val db = FirebaseFirestore.getInstance()
+        val name = getUserPrefs("user_name", "")
+        val email = getUserPrefs("user_email", "")
+        val gameId = 0
 
+        // المستخدم تحت 6 سنوات لا يحتاج Firebase
+        if (userType == "under6") {
+            prefs.edit().putBoolean("user_completed_onboarding", true).apply()
+            hideLoading()
+            navigateToHome()
+            return
+        }
+
+        FirebaseAuth.getInstance().addAuthStateListener { auth ->
+            val firebaseUser = auth.currentUser
             if (firebaseUser != null) {
                 val uid = firebaseUser.uid
-                val email = firebaseUser.email ?: ""
-
-                val name = prefs.getString("user_name", "") ?: ""
-                val character = selectedDrawable
-                val gameId = 0
-
                 val userData = hashMapOf(
                     "uid" to uid,
                     "email" to email,
                     "name" to name,
-                    "character" to character,
+                    "character_id" to selectedCharacterId,
                     "gameId" to gameId
                 )
 
-                db.collection("users").document(uid)
+                FirebaseFirestore.getInstance().collection("users").document(uid)
                     .set(userData)
                     .addOnSuccessListener {
-                        Toast.makeText(this, "تم حفظ بيانات المستخدم", Toast.LENGTH_SHORT).show()
+                        prefs.edit().putBoolean("user_completed_onboarding", true).apply()
+                        hideLoading()
+                        navigateToHome()
                     }
                     .addOnFailureListener { e ->
-                        Toast.makeText(this, "فشل في حفظ البيانات: ${e.message}", Toast.LENGTH_SHORT).show()
+                        hideLoading()
+                        Log.e("FirestoreError", "فشل الحفظ: ", e)
+                        Toast.makeText(this, "فشل في حفظ البيانات: ${e.message}", Toast.LENGTH_LONG).show()
                     }
             } else {
-                Toast.makeText(this, "المستخدم غير مسجل دخول!", Toast.LENGTH_SHORT).show()
+                hideLoading()
+                Toast.makeText(this, "لم يتم تسجيل الدخول!", Toast.LENGTH_SHORT).show()
             }
-
-            startActivity(Intent(this, HomeActivity::class.java))
-            finish()
         }
+    }
+
+    private fun navigateToHome() {
+        startActivity(Intent(this, HomeActivity::class.java))
+        finish()
+    }
+
+    private fun showLoading() {
+        loadingOverlaylayout.visibility = View.VISIBLE
+        loadingOverlaylayout.isClickable = true
+        rocket2.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        loadingOverlaylayout.visibility = View.GONE
+        rocket2.visibility = View.GONE
     }
 }

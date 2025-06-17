@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FDFCE8">
+
+    <!-- القسم العلوي (خلفية جزئية + لوجو + أيقونة القائمة) -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4">
+
+        <!-- الخلفية الجزئية -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/space_background"
+            android:contentDescription="space background" />
+
+        <!-- أيقونة القائمة -->
+        <ImageView
+            android:id="@+id/menu_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="25dp"
+            android:layout_gravity="top|end"
+            android:src="@drawable/menu"
+            android:contentDescription="قائمة"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless" />
+
+        <!-- لوجو + العنوان -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top|center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/about_logo"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:src="@drawable/logo"
+                android:elevation="8dp"/>
+
+            <TextView
+                android:id="@+id/about_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="عن التطبيق"
+                android:textColor="#0D6798"
+                android:textSize="28sp"
+                android:fontFamily="@font/zain_bold"
+                android:gravity="center"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="10dp"/>
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- القسم السفلي -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:gravity="center">
+
+        <!-- السحابة التي تحتوي كل النصوص التعريفية -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:layout_marginTop="-170dp"
+            android:elevation="6dp"
+            android:gravity="center">
+
+            <!-- النص التعريفي -->
+            <TextView
+                android:id="@+id/about_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="تطبيقنا صُمم ليكون رفيق أطفالكم في التعلم والمرح! يجمع بين الألعاب الذكية، والأنشطة المفيدة، مع واجهة تفاعلية وألوان جذابة. هدفنا أن نخلق بيئة آمنة وإبداعية لتطوير مهارات الطفل بشكل ممتع."
+                android:textColor="#0D6798"
+                android:textSize="16sp"
+                android:fontFamily="@font/zain_regular"
+                android:gravity="center"
+                android:lineSpacingExtra="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- الحقوق أو الفريق -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="تطوير فريق نجوم الفضاء 🚀"
+                android:textColor="#0E6699"
+                android:textSize="16sp"
+                android:fontFamily="@font/zain_regular"
+                android:layout_marginTop="10dp"
+                android:gravity="center"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

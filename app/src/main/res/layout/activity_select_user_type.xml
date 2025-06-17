@@ -33,149 +33,160 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- البطاقة الأولى -->
-    <FrameLayout
-        android:id="@+id/cardUnder6"
+    <!-- السطر الأفقي للكاردات -->
+    <LinearLayout
+        android:id="@+id/cardsRow"
         android:layout_width="0dp"
-        android:layout_height="500dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="40dp"
         app:layout_constraintTop_toBottomOf="@id/titleText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cardAbove6"
-        app:layout_constraintWidth_percent="0.45">
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- البطاقة الأولى -->
+        <FrameLayout
+            android:id="@+id/cardUnder6"
+            android:layout_width="0dp"
+            android:layout_height="500dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="32dp">
+
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@drawable/user_card"
-            android:padding="16dp"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true">
-
-            <ImageView
-                android:layout_width="200dp"
-                android:layout_height="250dp"
-                android:src="@drawable/user1"
-                android:contentDescription="طفل صغير" />
-
-            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="أنا أصغر من\n ٦ سنـوات"
-                android:textAlignment="center"
-                android:textColor="@color/drawer_item_color"
-                android:textSize="30sp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/zain_regular" />
-
-            <!-- النص + التأثير في نفس المكان -->
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/starEffectUnder6"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:elevation="0dp"
-                    android:layout_gravity="center"
-                    android:translationZ="0dp"
-                    android:layout_marginTop="50dp"
-                    app:lottie_autoPlay="true"
-                    android:visibility="invisible"
-                    app:lottie_loop="true"
-                    app:lottie_rawRes="@raw/stars2" />
-                <TextView
-                    android:id="@+id/textPlayDirectly"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="أريد اللعب \nمباشرة!"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:textColor="@android:color/holo_blue_dark"
-                    android:textSize="20sp"
-                    android:fontFamily="@font/zain_bold" />
-
-            </FrameLayout>
-
-        </LinearLayout>
-    </FrameLayout>
-
-    <!-- البطاقة الثانية -->
-    <FrameLayout
-        android:id="@+id/cardAbove6"
-        android:layout_width="0dp"
-        android:layout_height="500dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toTopOf="@id/cardUnder6"
-        app:layout_constraintStart_toEndOf="@id/cardUnder6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.45">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@drawable/user_card"
-            android:padding="16dp"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true">
-
-            <ImageView
-                android:layout_width="200dp"
-                android:layout_height="250dp"
-                android:src="@drawable/user2"
-                android:contentDescription="طفل أكبر" />
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="أنـا ٦ سنــوات\n أو أكثـر"
-                android:textAlignment="center"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+            android:layout_marginBottom="32dp"
+        android:background="@drawable/user_card"
                 android:gravity="center"
-                android:textColor="@color/drawer_item_color"
-                android:textSize="30sp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/zain_regular" />
+                android:clickable="true"
+                android:focusable="true">
 
-            <!-- النص + التأثير في نفس المكان -->
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/starEffectAbove6"
+                <ImageView
                     android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center"
-                    android:elevation="0dp"
-                    android:translationZ="0dp"
-                    android:layout_marginTop="50dp"
-                    android:visibility="invisible"
-                    app:lottie_autoPlay="true"
-                    app:lottie_loop="true"
-                    app:lottie_rawRes="@raw/stars2" />
+                    android:layout_height="250dp"
+                    android:paddingHorizontal="10dp"
+                    android:src="@drawable/user1"
+                    android:contentDescription="طفل صغير" />
+
                 <TextView
-                    android:id="@+id/textCreateAccount"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="أريد حساب \nخاص بــي"
-                    android:textColor="@android:color/holo_blue_dark"
-                    android:textSize="20sp"
+                    android:text="أنا أصغر من\n ٦ سنـوات"
                     android:textAlignment="center"
+                    android:paddingHorizontal="1dp"
+                    android:textColor="@color/drawer_item_color"
+                    android:textSize="30sp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/zain_regular" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:layout_height="wrap_content">
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/starEffectUnder6"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:elevation="0dp"
+                        android:layout_gravity="center"
+                        android:translationZ="0dp"
+                        android:layout_marginTop="50dp"
+                        app:lottie_autoPlay="true"
+                        android:visibility="invisible"
+                        app:lottie_loop="true"
+                        app:lottie_rawRes="@raw/stars2" />
+                    <TextView
+                        android:id="@+id/textPlayDirectly"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="أريد اللعب \nمباشرة!"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/zain_bold" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- البطاقة الثانية -->
+        <FrameLayout
+            android:id="@+id/cardAbove6"
+            android:layout_width="0dp"
+            android:layout_height="500dp"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="32dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/user_card"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="200dp"
+                    android:paddingHorizontal="10dp"
+                    android:layout_height="250dp"
+                    android:src="@drawable/user2"
+                    android:contentDescription="طفل أكبر" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="أنـا ٦ سنــوات\n أو أكثـر"
+                    android:textAlignment="center"
+                    android:paddingHorizontal="1dp"
                     android:gravity="center"
-                    android:fontFamily="@font/zain_bold" />
+                    android:textColor="@color/drawer_item_color"
+                    android:textSize="30sp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/zain_regular" />
 
-            </FrameLayout>
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:layout_height="wrap_content">
 
-        </LinearLayout>
-    </FrameLayout>
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/starEffectAbove6"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_gravity="center"
+                        android:elevation="0dp"
+                        android:translationZ="0dp"
+                        android:layout_marginTop="50dp"
+                        android:visibility="invisible"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"
+                        app:lottie_rawRes="@raw/stars2" />
+                    <TextView
+                        android:id="@+id/textCreateAccount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="أريد حساب \nخاص بــي"
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:textSize="20sp"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:fontFamily="@font/zain_bold" />
 
+                </FrameLayout>
+
+            </LinearLayout>
+        </FrameLayout>
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

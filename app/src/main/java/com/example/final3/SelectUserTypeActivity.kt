@@ -13,7 +13,16 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.lottie.LottieAnimationView
+
 class SelectUserTypeActivity : AppCompatActivity() {
+    override fun onPause() {
+        super.onPause()
+        GameMusicService.pauseMusic()
+    }
+    override fun onResume() {
+        super.onResume()
+        GameMusicService.resumeMusic()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +40,6 @@ class SelectUserTypeActivity : AppCompatActivity() {
         textPlayDirectly.setTextColor(Color.parseColor("#2196F3"))
         textCreateAccount.setTextColor(Color.parseColor("#2196F3"))
 
-        // دالة تطبيق تأثير التدرج المتحرك على النصوص
         fun applyMovingGradient(textView: TextView): Runnable {
             val paint = textView.paint
             val width = paint.measureText(textView.text.toString())
@@ -60,7 +68,6 @@ class SelectUserTypeActivity : AppCompatActivity() {
         var playDirectlyGradientRunnable: Runnable? = null
         var createAccountGradientRunnable: Runnable? = null
 
-        // تأثير اللمس على زر "العب مباشرة"
         textPlayDirectly.setOnTouchListener { _, event ->
             starsUnder6.visibility = View.VISIBLE
             when (event.action) {
@@ -85,7 +92,6 @@ class SelectUserTypeActivity : AppCompatActivity() {
             true
         }
 
-        // تأثير اللمس على زر "إنشاء حساب"
         textCreateAccount.setOnTouchListener { _, event ->
             starsAbove6.visibility = View.VISIBLE
             when (event.action) {
@@ -110,7 +116,6 @@ class SelectUserTypeActivity : AppCompatActivity() {
             true
         }
 
-        // كارد تحت 6 سنوات
         cardUnder6.setOnClickListener {
             starsUnder6.visibility = View.VISIBLE
             starsUnder6.setAnimation(R.raw.stars)
@@ -145,9 +150,14 @@ class SelectUserTypeActivity : AppCompatActivity() {
 
     private fun saveUserTypeAndNavigate(userType: String, destination: Class<*>) {
         val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
-        prefs.edit().putString("user_type", userType).apply()
-        Log.d("SelectUserType", "Saved user_type: $userType")
+        prefs.edit()
+            .putString("user_type", userType)
+            .putBoolean("is_first_launch", false)
+            .apply()
+        Log.d("esraa", "Saved user_type: $userType")
         startActivity(Intent(this, destination))
         finish()
     }
+
+
 }

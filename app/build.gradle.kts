@@ -42,7 +42,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -59,7 +58,15 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
+ //   implementation(project(":unityLibrary"))
+//    implementation(
+//        fileTree(
+//            mapOf(
+//                "dir" to file("unityLibrary/libs"),
+//                "include" to listOf("*.jar")
+//            )
+//        )
+//    )
     implementation("io.github.ShawnLin013:number-picker:2.4.13")
     implementation("com.airbnb.android:lottie:5.0.3")
     implementation("com.google.android.material:material:1.11.0")
@@ -73,4 +80,12 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx:24.10.3")
     implementation("com.google.android.gms:play-services-auth:20.5.0")
     implementation("com.google.android.material:material:1.12.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test:runner:1.6.1")
+    androidTestImplementation("androidx.test:rules:1.6.1")
+    androidTestImplementation("org.mockito:mockito-core:4.8.1")
+    androidTestImplementation("org.mockito:mockito-android:4.8.1")
+    androidTestImplementation("io.mockk:mockk-android:1.12.0")
+
+
 }

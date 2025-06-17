@@ -11,6 +11,15 @@ import com.google.android.material.textfield.TextInputLayout
 import androidx.appcompat.app.AppCompatActivity
 
 class WriteNameActivity : AppCompatActivity() {
+    override fun onPause() {
+        super.onPause()
+        GameMusicService.pauseMusic()
+    }
+    override fun onResume() {
+        super.onResume()
+        GameMusicService.resumeMusic()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_write_name)

@@ -26,8 +26,8 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|center_horizontal"
-            android:layout_marginTop="80dp"
+            android:layout_gravity="top|center"
+            android:layout_marginTop="50dp"
             android:text="تعديل الحساب"
             android:textColor="@color/white"
             android:textSize="50sp"
@@ -92,7 +92,7 @@
             android:gravity="center_vertical"
             android:background="@drawable/cloud1"
             android:paddingHorizontal="16dp"
-            android:layout_marginTop="40dp">
+            >
 
             <!-- TextView لعرض الاسم -->
             <TextView
@@ -102,6 +102,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:textSize="25sp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/zain_bold"
                 android:gravity="center"
                 android:text="اسم الطفل" />
@@ -141,7 +142,7 @@
         <LinearLayout
             android:id="@+id/save_button"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="60dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:background="@drawable/cloud1"
@@ -153,6 +154,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="حفظ التعديلات"
+                android:layout_marginTop="10dp"
                 android:textColor="#0D6999"
                 android:textSize="25sp"
                 android:fontFamily="@font/zain_bold" />
@@ -162,7 +164,7 @@
         <LinearLayout
             android:id="@+id/backBtn"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="60dp"
             android:layout_marginTop="20dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
@@ -176,6 +178,7 @@
                 android:text="تراجع"
                 android:textColor="@color/white"
                 android:textSize="25sp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/zain_bold" />
         </LinearLayout>
     </LinearLayout>

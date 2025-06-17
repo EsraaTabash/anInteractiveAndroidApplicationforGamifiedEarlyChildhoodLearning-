@@ -9,6 +9,15 @@ import androidx.core.view.WindowInsetsCompat
 
 class SettingsActivity : BaseActivity() {
     @SuppressLint("MissingInflatedId", "NewApi")
+    override fun onPause() {
+        super.onPause()
+        GameMusicService.pauseMusic()
+    }
+    override fun onResume() {
+        super.onResume()
+        GameMusicService.resumeMusic()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

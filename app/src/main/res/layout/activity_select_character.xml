@@ -57,9 +57,9 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:numColumns="3"
-        android:layout_gravity="center"
         android:gravity="center_horizontal"
         android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
         android:stretchMode="columnWidth"
         android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/title"
@@ -68,6 +68,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="16dp"/>
+
 
     <!-- زر البداية -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -101,5 +102,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        android:id="@+id/select_loadingOverlaylayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="#80000000"
+        android:clickable="true"
+        android:focusable="true">
+
+        <TextView
+            android:id="@+id/select_loadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="140dp"
+            android:alpha="0.6"
+            android:text="الرجـــاء الانتظــــار.."
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:fontFamily="@font/zain_bold" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/select_loadingRocket"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:rotation="90"
+            app:lottie_fileName="rocket.json"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
