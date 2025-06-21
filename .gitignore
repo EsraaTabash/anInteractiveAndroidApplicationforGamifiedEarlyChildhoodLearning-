@@ -1,3 +1,4 @@
+# Java & Android
 *.iml
 .gradle
 /local.properties
@@ -13,3 +14,38 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Unity
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+*.csproj
+*.unityproj
+*.sln
+*.user
+*.pidb
+*.suo
+*.tmp
+*.userprefs
+*.booproj
+*.svd
+
+# Exclude build folders in all modules
+**/build/
+**/Build/
+**/builds/
+
+# Android/Unity APKs and keys
+*.apk
+*.aab
+*.keystore
+
+# Other
+*.log
+*.zip
+*.rar
+*.tar.gz

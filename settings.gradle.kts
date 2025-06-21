@@ -20,5 +20,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Final3"
-include(":app")
- 
+include(":app", ":unityLibrary")
