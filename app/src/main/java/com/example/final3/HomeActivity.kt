@@ -11,7 +11,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.GravityCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FieldValue
 
 class HomeActivity : BaseActivity() {
 
@@ -35,7 +34,7 @@ class HomeActivity : BaseActivity() {
         val childName = drawerUserName
         val childEmail = drawerUserEmail
 
-        updateScore()
+        updateScore() // يستدعي السكور ويعرضه ويخزنه ويرسله لـ Unity
 
         if (userType == "under6") {
             showUnder6Profile(profileImage, childName, childEmail)
@@ -46,10 +45,11 @@ class HomeActivity : BaseActivity() {
         menuIcon.setOnClickListener { drawerLayout.openDrawer(GravityCompat.END) }
     }
 
-    private fun updateScore() {
+    private fun updateScore(sendToUnity: Boolean = true) {
         if (userType == "under6") {
             val score = prefs.getInt("game_score", 0)
             tvScore.text = "عدد النجــوم التي حصلت عليــها : $score"
+            if (sendToUnity) sendScoreToUnity(score)
         } else {
             val uid = FirebaseAuth.getInstance().currentUser?.uid
             if (uid != null) {
@@ -57,7 +57,9 @@ class HomeActivity : BaseActivity() {
                     .get()
                     .addOnSuccessListener {
                         val score = it.getLong("score")?.toInt() ?: 0
+                        prefs.edit().putInt("game_score", score).apply()
                         tvScore.text = "عدد النجــوم التي حصلت عليــها : $score"
+                        if (sendToUnity) sendScoreToUnity(score)
                     }
                     .addOnFailureListener {
                         tvScore.text = "عدد النجوم: غير متوفر"
@@ -65,6 +67,19 @@ class HomeActivity : BaseActivity() {
             } else {
                 tvScore.text = "عدد النجوم: غير مسجل دخول"
             }
+        }
+    }
+
+    private fun sendScoreToUnity(score: Int) {
+        try {
+            val unityPlayer = Class.forName("com.unity3d.player.UnityPlayer")
+            val currentActivity = unityPlayer.getField("currentActivity").get(null)
+            val unitySendMessage = unityPlayer.getMethod("UnitySendMessage", String::class.java, String::class.java, String::class.java)
+
+            unitySendMessage.invoke(null, "GameManager", "ReceiveScoreFromAndroid", score.toString())
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "فشل إرسال السكور إلى اللعبة", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -96,9 +111,7 @@ class HomeActivity : BaseActivity() {
                 .addOnSuccessListener {
                     userName = it.getString("name") ?: "اسم غير متوفر"
                     userEmail = it.getString("email") ?: "بريد غير متوفر"
-                    prefs.edit().putString("user_name", userName)
-                        .putString("user_email", userEmail)
-                        .apply()
+                    prefs.edit().putString("user_name", userName).putString("user_email", userEmail).apply()
                     setProfile(image, name, email, imgId, userName, userEmail)
                 }
                 .addOnFailureListener {
@@ -131,7 +144,7 @@ class HomeActivity : BaseActivity() {
         super.onResume()
         GameMusicService.resumeMusic()
         selectDrawerItem(R.id.nav_home)
-        updateScore() // ⚠️ هذا هو السطر الذي يعيد تحميل السكور
+        updateScore()
     }
 
     override fun onPause() {

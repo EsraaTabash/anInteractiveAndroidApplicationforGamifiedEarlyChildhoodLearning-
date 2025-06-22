@@ -11,7 +11,6 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.unity3d.player.UnityPlayerActivity
 import java.util.concurrent.Executors
@@ -128,27 +127,31 @@ abstract class BaseGameFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == UNITY_REQUEST_CODE && resultCode == RESULT_OK) {
             executor.submit {
-                val scoreFromUnity = data?.getIntExtra("score", -1)
+                val scoreFromUnity = data?.getIntExtra("score", -1) ?: -1
 
                 requireActivity().runOnUiThread {
-                    if (scoreFromUnity != null && scoreFromUnity != -1) {
-                        score += scoreFromUnity
+                    if (scoreFromUnity != -1) {
                         showToast("نتيجتك في اللعبة: $scoreFromUnity 🎮")
 
                         val prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
                         val userType = prefs.getString("user_type", "under6") ?: "under6"
 
-                        if (userType == "under6") {
-                            val oldScore = prefs.getInt("game_score", 0)
-                            prefs.edit().putInt("game_score", oldScore + scoreFromUnity).apply()
-                        } else {
+                        val previousScore = prefs.getInt("game_score", 0)
+                        val updatedScore = previousScore + scoreFromUnity
+
+                        // 🟢 حفظ المجموع الجديد
+                        prefs.edit().putInt("game_score", updatedScore).apply()
+
+                        // 🔵 تحديث Firestore فقط للمستخدم فوق 6 سنوات
+                        if (userType != "under6") {
                             FirebaseAuth.getInstance().currentUser?.uid?.let { uid ->
                                 FirebaseFirestore.getInstance().collection("users")
                                     .document(uid)
-                                    .update("score", FieldValue.increment(scoreFromUnity.toLong()))
+                                    .update("score", updatedScore)
                             }
                         }
 
+                        score += scoreFromUnity
                         onGameEnd(lastPlayedCardIndex)
                     } else {
                         showToast("⚠️ لم يتم استقبال النتيجة من Unity")
