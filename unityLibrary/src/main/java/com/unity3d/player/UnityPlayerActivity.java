@@ -171,4 +171,13 @@ public class UnityPlayerActivity extends Activity implements IUnityPlayerLifecyc
     @Override public boolean onKeyDown(int keyCode, KeyEvent event)   { return mUnityPlayer.getFrameLayout().onKeyDown(keyCode, event); }
     @Override public boolean onTouchEvent(MotionEvent event)          { return mUnityPlayer.getFrameLayout().onTouchEvent(event); }
     @Override public boolean onGenericMotionEvent(MotionEvent event)  { return mUnityPlayer.getFrameLayout().onGenericMotionEvent(event); }
+    // في UnityPlayerActivity.java
+    public void sendScoreAndFinish(int score) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("score", score);
+        setResult(RESULT_OK, resultIntent);
+        finish();
+    }
+
+
 }

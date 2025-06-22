@@ -7,6 +7,8 @@
 
 
 
+extern void AndroidBridge_SendScoreAndExit_m6ADE5EE6831C0AE58ED044524CE64D0FC18070BC (void);
+extern void AndroidBridge__ctor_mEB98A234826672CF879926A9FC346C97BE68DB2A (void);
 extern void ButtonSound_Start_mF5BA348FF0589C7477282C031BD89772E3D4E51D (void);
 extern void ButtonSound_PlayClickSound_m84C6BBDDE9D4405CE0409303C43A3C186C5BE5C3 (void);
 extern void ButtonSound__ctor_mA5E0E9E7AAEACE0BE4B5F152E6B6F7A205632784 (void);
@@ -31,8 +33,10 @@ extern void startMenuContlorer_OnBackToMenuClick_m8A243D6A8E549AEF5AA9776D416EE2
 extern void startMenuContlorer__ctor_mB7647D7BFEDA59B6552C1CC32DE7B9E0F2502EAA (void);
 extern void UnitySourceGeneratedAssemblyMonoScriptTypes_v1_Get_mBEB95BEB954BB63E9710BBC7AD5E78C4CB0A0033 (void);
 extern void UnitySourceGeneratedAssemblyMonoScriptTypes_v1__ctor_mE70FB23ACC1EA12ABC948AA22C2E78B2D0AA39B1 (void);
-static Il2CppMethodPointer s_methodPointers[24] = 
+static Il2CppMethodPointer s_methodPointers[26] = 
 {
+	AndroidBridge_SendScoreAndExit_m6ADE5EE6831C0AE58ED044524CE64D0FC18070BC,
+	AndroidBridge__ctor_mEB98A234826672CF879926A9FC346C97BE68DB2A,
 	ButtonSound_Start_mF5BA348FF0589C7477282C031BD89772E3D4E51D,
 	ButtonSound_PlayClickSound_m84C6BBDDE9D4405CE0409303C43A3C186C5BE5C3,
 	ButtonSound__ctor_mA5E0E9E7AAEACE0BE4B5F152E6B6F7A205632784,
@@ -58,8 +62,10 @@ static Il2CppMethodPointer s_methodPointers[24] =
 	UnitySourceGeneratedAssemblyMonoScriptTypes_v1_Get_mBEB95BEB954BB63E9710BBC7AD5E78C4CB0A0033,
 	UnitySourceGeneratedAssemblyMonoScriptTypes_v1__ctor_mE70FB23ACC1EA12ABC948AA22C2E78B2D0AA39B1,
 };
-static const int32_t s_InvokerIndices[24] = 
+static const int32_t s_InvokerIndices[26] = 
 {
+	11717,
+	6878,
 	6878,
 	6878,
 	6878,
@@ -89,7 +95,7 @@ IL2CPP_EXTERN_C const Il2CppCodeGenModule g_AssemblyU2DCSharp_CodeGenModule;
 const Il2CppCodeGenModule g_AssemblyU2DCSharp_CodeGenModule = 
 {
 	"Assembly-CSharp.dll",
-	24,
+	26,
 	s_methodPointers,
 	0,
 	NULL,

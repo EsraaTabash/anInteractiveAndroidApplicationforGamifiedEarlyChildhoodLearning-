@@ -24,6 +24,8 @@ class WelcomeActivity : AppCompatActivity() {
         GameMusicService.resumeMusic()
     }
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
@@ -185,7 +187,7 @@ class WelcomeActivity : AppCompatActivity() {
         val moveRightStoneX = ObjectAnimator.ofFloat(rightStone, "translationX", 0f)
         val moveRightStoneY = ObjectAnimator.ofFloat(rightStone, "translationY", 0f)
 
-        val moveLastStoneX = ObjectAnimator.ofFloat(lastStone, "translationX", -100f)
+        val moveLastStoneX = ObjectAnimator.ofFloat(lastStone, "translationX", 100f)
         val moveLastStoneY = ObjectAnimator.ofFloat(lastStone, "translationY", 0f)
 
 

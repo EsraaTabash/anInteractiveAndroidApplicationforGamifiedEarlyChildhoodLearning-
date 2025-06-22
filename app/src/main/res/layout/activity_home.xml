@@ -56,6 +56,34 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <LinearLayout
+            android:id="@+id/panel_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_text"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/btn_star_big_on" />
+
+            <TextView
+                android:id="@+id/tv_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="عدد النجــوم التي حصلت عليــها : "
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:fontFamily="@font/tajawal_bold"
+                android:layout_marginStart="8dp" />
+
+        </LinearLayout>
+
         <!-- الخط -->
         <View
             android:id="@+id/line"
@@ -75,7 +103,7 @@
             android:fillViewport="true"
             android:clipToPadding="false"
             android:paddingBottom="16dp"
-            app:layout_constraintTop_toBottomOf="@id/line"
+            app:layout_constraintTop_toBottomOf="@id/panel_score"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">

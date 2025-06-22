@@ -142,6 +142,13 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-
+        <activity
+            android:name="com.unity3d.player.UnityPlayerActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:process=":unity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            tools:replace="android:configChanges,android:launchMode,android:theme" />
     </application>
 </manifest>

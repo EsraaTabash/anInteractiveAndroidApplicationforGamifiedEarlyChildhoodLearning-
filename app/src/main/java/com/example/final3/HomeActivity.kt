@@ -9,12 +9,15 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FieldValue
 
 class HomeActivity : BaseActivity() {
+
+    private lateinit var tvScore: TextView
+    private lateinit var prefs: SharedPreferences
+    private var userType: String = "under6"
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,30 +26,49 @@ class HomeActivity : BaseActivity() {
         supportActionBar?.hide()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        val prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        val userType = prefs.getString("user_type", "under6") ?: "under6"
+        prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        userType = prefs.getString("user_type", "under6") ?: "under6"
+        tvScore = findViewById(R.id.tv_score)
 
-       // val navigationView = findViewById<NavigationView>(R.id.navigation_view)
         val menuIcon = findViewById<ImageView>(R.id.menu_icon)
-      //  val header = navigationView.getHeaderView(0)
         val profileImage = drawerProfileImage
         val childName = drawerUserName
         val childEmail = drawerUserEmail
 
-     //   val profileImage = header.findViewById<ImageView>(R.id.profile_image)
-   //     val childName = header.findViewById<TextView>(R.id.child_name)
-     //   val childEmail = header.findViewById<TextView>(R.id.child_email)
+        updateScore()
 
         if (userType == "under6") {
-            showUnder6Profile(prefs, profileImage, childName, childEmail)
+            showUnder6Profile(profileImage, childName, childEmail)
         } else {
-           showAbove6Profile(prefs, profileImage, childName, childEmail)
+            showAbove6Profile(profileImage, childName, childEmail)
         }
 
         menuIcon.setOnClickListener { drawerLayout.openDrawer(GravityCompat.END) }
     }
 
-    private fun showUnder6Profile(prefs: SharedPreferences, image: ImageView, name: TextView, email: TextView) {
+    private fun updateScore() {
+        if (userType == "under6") {
+            val score = prefs.getInt("game_score", 0)
+            tvScore.text = "عدد النجــوم التي حصلت عليــها : $score"
+        } else {
+            val uid = FirebaseAuth.getInstance().currentUser?.uid
+            if (uid != null) {
+                FirebaseFirestore.getInstance().collection("users").document(uid)
+                    .get()
+                    .addOnSuccessListener {
+                        val score = it.getLong("score")?.toInt() ?: 0
+                        tvScore.text = "عدد النجــوم التي حصلت عليــها : $score"
+                    }
+                    .addOnFailureListener {
+                        tvScore.text = "عدد النجوم: غير متوفر"
+                    }
+            } else {
+                tvScore.text = "عدد النجوم: غير مسجل دخول"
+            }
+        }
+    }
+
+    private fun showUnder6Profile(image: ImageView, name: TextView, email: TextView) {
         val imgId = prefs.getInt("user_character", R.drawable.ch1)
         val defaultName = mapOf(
             R.drawable.ch1 to "ربانزل", R.drawable.ch2 to "موانا", R.drawable.ch3 to "آنا",
@@ -62,7 +84,7 @@ class HomeActivity : BaseActivity() {
             .commit()
     }
 
-    private fun showAbove6Profile(prefs: SharedPreferences, image: ImageView, name: TextView, email: TextView) {
+    private fun showAbove6Profile(image: ImageView, name: TextView, email: TextView) {
         var userName = prefs.getString("user_name", "").orEmpty()
         var userEmail = prefs.getString("user_email", "").orEmpty()
         val imgId = prefs.getInt("user_character", R.drawable.ch1)
@@ -74,7 +96,9 @@ class HomeActivity : BaseActivity() {
                 .addOnSuccessListener {
                     userName = it.getString("name") ?: "اسم غير متوفر"
                     userEmail = it.getString("email") ?: "بريد غير متوفر"
-                    prefs.edit().putString("user_name", userName).putString("user_email", userEmail).apply()
+                    prefs.edit().putString("user_name", userName)
+                        .putString("user_email", userEmail)
+                        .apply()
                     setProfile(image, name, email, imgId, userName, userEmail)
                 }
                 .addOnFailureListener {
@@ -103,14 +127,15 @@ class HomeActivity : BaseActivity() {
         email.visibility = View.VISIBLE
     }
 
-    override fun onPause() {
-        super.onPause()
-        GameMusicService.pauseMusic()
-    }
-
     override fun onResume() {
         super.onResume()
         GameMusicService.resumeMusic()
         selectDrawerItem(R.id.nav_home)
+        updateScore() // ⚠️ هذا هو السطر الذي يعيد تحميل السكور
+    }
+
+    override fun onPause() {
+        super.onPause()
+        GameMusicService.pauseMusic()
     }
 }

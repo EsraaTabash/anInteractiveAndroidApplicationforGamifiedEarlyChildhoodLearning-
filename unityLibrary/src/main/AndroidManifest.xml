@@ -15,10 +15,6 @@
     <meta-data android:name="unity.auto-set-game-state" android:value="true" />
     <meta-data android:name="unity.strip-engine-code" android:value="true" />
     <activity android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density" android:enabled="true" android:exported="true" android:hardwareAccelerated="false" android:launchMode="singleTask" android:name="com.unity3d.player.UnityPlayerActivity" android:resizeableActivity="false" android:screenOrientation="portrait" android:theme="@style/UnityThemeSelector">
-      <intent-filter>
-        <category android:name="android.intent.category.LAUNCHER" />
-        <action android:name="android.intent.action.MAIN" />
-      </intent-filter>
       <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
       <meta-data android:name="notch_support" android:value="true" />
     </activity>

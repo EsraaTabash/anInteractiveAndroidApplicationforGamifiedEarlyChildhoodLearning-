@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.unity3d.player.UnityPlayerActivity
 import java.util.concurrent.Executors
@@ -60,7 +61,7 @@ abstract class BaseGameFragment : Fragment() {
     private fun startGame(gameId: Int) {
         updateGameIdToCloud(gameId)
 
-        val intent = Intent(requireContext(), com.unity3d.player.UnityPlayerActivity::class.java)
+        val intent = Intent(requireContext(), UnityPlayerActivity::class.java)
         intent.putExtra("unityData", "${getCardPrefix()} card number is: $gameId")
         startActivityForResult(intent, UNITY_REQUEST_CODE)
     }
@@ -113,6 +114,7 @@ abstract class BaseGameFragment : Fragment() {
                 nextCard.visibility = View.VISIBLE
                 showToast("فتحنا كوكب ${index + 1} 🚀")
             }
+
             override fun onAnimationStart(animation: Animator) {}
             override fun onAnimationCancel(animation: Animator) {}
             override fun onAnimationRepeat(animation: Animator) {}
@@ -127,13 +129,29 @@ abstract class BaseGameFragment : Fragment() {
         if (requestCode == UNITY_REQUEST_CODE && resultCode == RESULT_OK) {
             executor.submit {
                 val scoreFromUnity = data?.getIntExtra("score", -1)
+
                 requireActivity().runOnUiThread {
                     if (scoreFromUnity != null && scoreFromUnity != -1) {
                         score += scoreFromUnity
-                        showToast("تم استقبال البيانات من Unity")
+                        showToast("نتيجتك في اللعبة: $scoreFromUnity 🎮")
+
+                        val prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                        val userType = prefs.getString("user_type", "under6") ?: "under6"
+
+                        if (userType == "under6") {
+                            val oldScore = prefs.getInt("game_score", 0)
+                            prefs.edit().putInt("game_score", oldScore + scoreFromUnity).apply()
+                        } else {
+                            FirebaseAuth.getInstance().currentUser?.uid?.let { uid ->
+                                FirebaseFirestore.getInstance().collection("users")
+                                    .document(uid)
+                                    .update("score", FieldValue.increment(scoreFromUnity.toLong()))
+                            }
+                        }
+
                         onGameEnd(lastPlayedCardIndex)
                     } else {
-                        showToast("لم يتم استقبال البيانات بشكل صحيح من Unity")
+                        showToast("⚠️ لم يتم استقبال النتيجة من Unity")
                     }
                 }
             }

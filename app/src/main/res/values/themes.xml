@@ -1,7 +1,7 @@
         <resources>
 
     <!-- ثيم أساسي يعتمد على Material Components -->
-    <style name="Theme.Final1" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Final1"  parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- مثال على إعداد الألوان -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorOnPrimary">@color/white</item>
