@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.unity3d.player.UnityPlayerActivity
 import java.util.concurrent.Executors
 
 abstract class BaseGameFragment : Fragment() {
@@ -59,9 +60,9 @@ abstract class BaseGameFragment : Fragment() {
     private fun startGame(gameId: Int) {
         updateGameIdToCloud(gameId)
 
-        //val intent = Intent(requireContext(), UnityPlayerGameActivity::class.java)
-      //  intent.putExtra("unityData", "${getCardPrefix()} card number is: $gameId")
-       // startActivityForResult(intent, UNITY_REQUEST_CODE)
+        val intent = Intent(requireContext(), com.unity3d.player.UnityPlayerActivity::class.java)
+        intent.putExtra("unityData", "${getCardPrefix()} card number is: $gameId")
+        startActivityForResult(intent, UNITY_REQUEST_CODE)
     }
 
     private fun updateGameIdToCloud(gameId: Int) {
