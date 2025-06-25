@@ -20,7 +20,9 @@
         <service
             android:name=".GameMusicService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback" />
+
 
         <activity
             android:name=".SplashActivity"
