@@ -10,12 +10,12 @@ import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.airbnb.lottie.LottieAnimationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.unity3d.player.UnityPlayerActivity
 import java.util.concurrent.Executors
 
 abstract class BaseGameFragment : Fragment() {
@@ -42,78 +42,79 @@ abstract class BaseGameFragment : Fragment() {
         student.bringToFront()
         initializeCards(view)
 
+        // 1. حمل السكور المحلي أولاً حتى لو لم يوجد بيانات في الشيرد بريفيرنس
+        loadScore()
+
+        // 2. حمل آخر تقدم للبطاقات
         loadProgress()
     }
 
+    // تحميل السكور فقط من SharedPreferences وعرضه على الـ UI بدون كراش
+    private fun loadScore() {
+        val prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val scoreLocal = prefs.getInt("game_score", 0)
+        score = scoreLocal
+        updateScoreUI(scoreLocal)
+    }
+
+    // تعديل: إزالة أي استعمال لحقل last_completed_card نهائيا!
     private fun loadProgress() {
         val prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val userType = prefs.getString("user_type", "under6") ?: "under6"
 
-        val lastUnlockedCardSP = prefs.getInt("last_unlocked_card", -1)
-        val lastCompletedCardSP = prefs.getInt("last_completed_card", -1)
+        val lastUnlockedCardSP = prefs.getInt("last_unlocked_card", 0)
 
         if (userType == "under6") {
-            // الطفل الصغير
-            if (lastUnlockedCardSP != -1 && lastCompletedCardSP != -1) {
-                loadProgressFromPrefsAndSetupUI(prefs)
-            } else {
-                // لا توجد بيانات - نبدأ من الصفر
-                prefs.edit()
-                    .putInt("last_unlocked_card", 0)
-                    .putInt("last_completed_card", -1)
-                    .apply()
-                loadProgressFromPrefsAndSetupUI(prefs)
-            }
+            // الطفل الصغير: يبدأ من الصفر إذا لم يكن هناك تقدم
+            prefs.edit()
+                .putInt("last_unlocked_card", lastUnlockedCardSP)
+                .apply()
+            loadProgressFromPrefsAndSetupUI(prefs)
         } else {
-            // الطفل الكبير
-            if (lastUnlockedCardSP != -1 && lastCompletedCardSP != -1) {
-                loadProgressFromPrefsAndSetupUI(prefs)
+            // الطفل الكبير: حمّل آخر تقدم من Firestore (أو محلياً إذا ما فيه نت)
+            val uid = FirebaseAuth.getInstance().currentUser?.uid
+            if (uid != null) {
+                showLoading()
+                FirebaseFirestore.getInstance().collection("users").document(uid).get()
+                    .addOnSuccessListener { doc ->
+                        val gameId = doc.getLong("gameId")?.toInt() ?: 0
+                        val scoreFS = doc.getLong("score")?.toInt() ?: 0
+
+                        prefs.edit()
+                            .putInt("last_unlocked_card", gameId)
+                            .putInt("game_score", scoreFS)
+                            .apply()
+
+                        score = scoreFS
+                        hideLoading()
+                        loadProgressFromPrefsAndSetupUI(prefs)
+                        updateScoreUI(scoreFS)
+                    }
+                    .addOnFailureListener {
+                        hideLoading()
+                        loadProgressFromPrefsAndSetupUI(prefs)
+                        updateScoreUI(score) // يعرض آخر سكورتعرف عليه محليا (او صفر)
+                    }
             } else {
-                val uid = FirebaseAuth.getInstance().currentUser?.uid
-                if (uid != null) {
-                    showLoading()
-                    FirebaseFirestore.getInstance().collection("users").document(uid).get()
-                        .addOnSuccessListener { doc ->
-                            val gameId = doc.getLong("gameId")?.toInt() ?: 0
-                            val lastCompletedCard = doc.getLong("last_completed_card")?.toInt() ?: -1
-
-                            prefs.edit()
-                                .putInt("last_unlocked_card", gameId)
-                                .putInt("last_completed_card", lastCompletedCard)
-                                .apply()
-
-                            hideLoading()
-                            loadProgressFromPrefsAndSetupUI(prefs)
-                        }
-                        .addOnFailureListener {
-                            hideLoading()
-                            loadProgressFromPrefsAndSetupUI(prefs)
-                        }
-                } else {
-                    loadProgressFromPrefsAndSetupUI(prefs)
-                }
+                loadProgressFromPrefsAndSetupUI(prefs)
+                updateScoreUI(score)
             }
         }
     }
 
     private fun loadProgressFromPrefsAndSetupUI(prefs: SharedPreferences) {
         val lastUnlockedCard = prefs.getInt("last_unlocked_card", 0)
-        val lastCompletedCard = prefs.getInt("last_completed_card", -1)
-
-        Log.d("BaseGameFragment", "loadProgressFromPrefsAndSetupUI -> lastUnlockedCard: $lastUnlockedCard, lastCompletedCard: $lastCompletedCard")
-
-        currentCardIndex = maxOf(lastCompletedCard + 1, lastUnlockedCard)
-        Log.d("BaseGameFragment", "Set currentCardIndex to: $currentCardIndex")
+        currentCardIndex = lastUnlockedCard
 
         for (i in cards.indices) {
             when {
-                i <= lastCompletedCard -> {
+                i < lastUnlockedCard -> {
                     cards[i].visibility = View.VISIBLE
                     cards[i].alpha = 0.3f
                     cards[i].bringToFront()
                     cards[i].isClickable = true
                 }
-                i == currentCardIndex -> {
+                i == lastUnlockedCard -> {
                     cards[i].visibility = View.VISIBLE
                     cards[i].alpha = 1f
                     cards[i].isClickable = true
@@ -128,7 +129,6 @@ abstract class BaseGameFragment : Fragment() {
         setupCardListeners()
 
         student.post {
-            Log.d("BaseGameFragment", "Moving student to card index $currentCardIndex")
             moveStudentToCard(currentCardIndex)
         }
     }
@@ -142,21 +142,17 @@ abstract class BaseGameFragment : Fragment() {
         }
     }
 
+    // عند إنهاء اللعبة - التحديث فقط على last_unlocked_card
     protected fun onGameEnd(index: Int) {
         if (index == -1) return
 
         val prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-
         if (index >= currentCardIndex) {
             val lastUnlockedCard = index + 1
-            val lastCompletedCard = index
-
             prefs.edit()
                 .putInt("last_unlocked_card", lastUnlockedCard)
-                .putInt("last_completed_card", lastCompletedCard)
                 .apply()
 
-            score += 100
             cards[index].alpha = 0.3f
 
             if (index + 1 < cards.size) {
@@ -172,8 +168,7 @@ abstract class BaseGameFragment : Fragment() {
             if (userType != "under6") {
                 FirebaseAuth.getInstance().currentUser?.uid?.let { uid ->
                     val dataToUpdate = hashMapOf<String, Any>(
-                        "gameId" to lastUnlockedCard,
-                        "last_completed_card" to lastCompletedCard
+                        "gameId" to lastUnlockedCard
                     )
                     FirebaseFirestore.getInstance().collection("users").document(uid)
                         .update(dataToUpdate)
@@ -208,10 +203,33 @@ abstract class BaseGameFragment : Fragment() {
     private fun startGame(gameId: Int) {
         updateGameIdToCloud(gameId)
 
-        val intent = Intent(requireContext(), UnityPlayerActivity::class.java)
+        val prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val userType = prefs.getString("user_type", "under6") ?: "under6"
+
+        // index من 0، بينما الكروت تبدأ من 1 عندك، لذلك استخدم gameId-1 لو تحب حسب الترتيب
+        val intent = when (userType) {
+            "under6" -> when (gameId) {
+                1 -> Intent(requireContext(), com.unity3d.player.ColoringGameActivity::class.java)
+                2 -> Intent(requireContext(), com.unity3d.player.ConnectionGameActivity::class.java)
+                3 -> Intent(requireContext(), com.unity3d.player.PuzzleShGameActivity::class.java)
+                4 -> Intent(requireContext(), com.unity3d.player.ConnectionGameActivity::class.java)
+                5 -> Intent(requireContext(), com.unity3d.player.PuzzleShGameActivity::class.java)
+                else -> Intent(requireContext(), com.unity3d.player.ColoringGameActivity::class.java)
+            }
+            else -> when (gameId) {
+                1 -> Intent(requireContext(), com.unity3d.player.ColoringGameActivity::class.java)
+                2 -> Intent(requireContext(), com.unity3d.player.CardsGameActivity::class.java)
+                3 -> Intent(requireContext(), com.unity3d.player.PuzzleGameActivity::class.java)
+                4 -> Intent(requireContext(), com.unity3d.player.CardsGameActivity::class.java)
+                5 -> Intent(requireContext(), com.unity3d.player.PuzzleGameActivity::class.java)
+                else -> Intent(requireContext(), com.unity3d.player.ColoringGameActivity::class.java)
+            }
+        }
+        // إذا تحتاج ترسل داتا معينة، عدل هنا
         intent.putExtra("unityData", "${getCardPrefix()} card number is: $gameId")
         startActivityForResult(intent, UNITY_REQUEST_CODE)
     }
+
 
     private fun updateGameIdToCloud(gameId: Int) {
         val prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
@@ -228,7 +246,7 @@ abstract class BaseGameFragment : Fragment() {
     }
 
     private val studentOffsets = listOf(
-        Pair(0f, 0f), Pair(-120f, -100f), Pair(-170f, 50f),
+        Pair(-100f, -100f), Pair(-120f, -100f), Pair(-170f, 50f),
         Pair(-40f, 80f), Pair(-200f, 20f), Pair(150f, -200f)
     )
 
@@ -251,30 +269,55 @@ abstract class BaseGameFragment : Fragment() {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
+    // هنا نجلب السكور من اللعبة، ونخزنه ونرفعه للفيرستور إذا Above6
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == UNITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            executor.submit {
-                val scoreFromUnity = data?.getIntExtra("score", -1) ?: -1
+            val scoreFromUnity = data?.getIntExtra("score", -1) ?: -1
 
-                requireActivity().runOnUiThread {
-                    if (scoreFromUnity != -1) {
-                        val prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-                        val previousScore = prefs.getInt("game_score", 0)
-                        val updatedScore = previousScore + scoreFromUnity
+            if (scoreFromUnity != -1) {
+                val prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                val previousScore = prefs.getInt("game_score", 0)
+                val updatedScore = previousScore + scoreFromUnity
+                prefs.edit().putInt("game_score", updatedScore).apply()
+                score = updatedScore
 
-                        prefs.edit().putInt("game_score", updatedScore).apply()
+                showToast("نتيجتك في اللعبة: $scoreFromUnity 🎮")
+                updateScoreUI(updatedScore)
 
-                        score += scoreFromUnity
-
-                        showToast("نتيجتك في اللعبة: $scoreFromUnity 🎮")
-
-                        onGameEnd(lastPlayedCardIndex)
-                    } else {
-                        showToast("⚠️ لم يتم استقبال النتيجة من Unity")
+                // رفع السكور على Firestore
+                val userType = prefs.getString("user_type", "under6") ?: "under6"
+                if (userType != "under6") {
+                    val uid = FirebaseAuth.getInstance().currentUser?.uid
+                    if (uid != null) {
+                        val dataToUpdate = mapOf("score" to updatedScore)
+                        FirebaseFirestore.getInstance().collection("users").document(uid)
+                            .update(dataToUpdate)
+                            .addOnSuccessListener {
+                                Log.d("BaseGameFragment", "تم تحديث السكور على Firestore")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("BaseGameFragment", "فشل تحديث السكور على Firestore", e)
+                            }
                     }
                 }
+
+                onGameEnd(lastPlayedCardIndex)
+            } else {
+                showToast("⚠️ لم يتم استقبال النتيجة من Unity")
             }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    // دالة آمنة لتحديث الـ UI (تحمي من NullPointerException)
+    private fun updateScoreUI(newScore: Int) {
+        val tvScore = try {
+            requireView().findViewById<TextView>(R.id.tv_score)
+        } catch (e: Exception) {
+            null
+        }
+        tvScore?.text = "عدد النجــوم التي حصلت عليــها : $newScore"
     }
 
     override fun onDestroy() {
@@ -290,5 +333,7 @@ abstract class BaseGameFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         GameMusicService.resumeMusic()
+        // عند العودة، أعرض السكور المحلي بشكل أكيد
+        updateScoreUI(score)
     }
 }

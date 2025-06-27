@@ -1,11 +1,9 @@
 package com.example.final3
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
@@ -31,10 +29,8 @@ class HomeActivity : BaseActivity() {
         supportActionBar?.hide()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        // 1. تهيئة SharedPreferences
-        prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
 
-        // 2. تهيئة الـ Views الأساسية
         loadingOverlaylayout = findViewById(R.id.loadingOverlaylayout)
         loadingRocket = findViewById(R.id.loadingRocket)
         tvScore = findViewById(R.id.tv_score)
@@ -44,14 +40,12 @@ class HomeActivity : BaseActivity() {
         val childName = drawerUserName
         val childEmail = drawerUserEmail
 
-        // 3. الحصول على نوع المستخدم من SharedPreferences
         userType = prefs.getString("user_type", "under6") ?: "under6"
 
-        // 4. عرض شاشة اللودينغ مباشرة
         showLoading()
 
         if (userType == "under6") {
-            // حالة المستخدم تحت 6 سنوات - بيانات محلية فقط
+            // بيانات محلية فقط
             updateScore()
             showUnder6Profile(profileImage, childName, childEmail)
 
@@ -61,19 +55,15 @@ class HomeActivity : BaseActivity() {
 
             hideLoading()
         } else {
-            // حالة المستخدم فوق 6 سنوات - جلب بيانات من Firebase Firestore
             val uid = FirebaseAuth.getInstance().currentUser?.uid
             if (uid != null) {
                 FirebaseFirestore.getInstance().collection("users").document(uid)
                     .get()
                     .addOnSuccessListener { doc ->
-                        val lastUnlockedCard = doc.getLong("last_unlocked_card")?.toInt() ?: 0
-                        val lastCompletedCard = doc.getLong("last_completed_card")?.toInt() ?: -1
-                        val score = doc.getLong("score")?.toInt() ?: 0
-                        val userName = doc.getString("name") ?: ""
-                        val userEmail = doc.getString("email") ?: ""
-
-                        val characterIndex = doc.getLong("character_id")?.toInt() ?: 1
+                        val score = doc.getLong("score")?.toInt() ?: prefs.getInt("game_score", 0)
+                        val userName = doc.getString("name") ?: prefs.getString("user_name", "") ?: ""
+                        val userEmail = doc.getString("email") ?: prefs.getString("user_email", "") ?: ""
+                        val characterIndex = doc.getLong("character_id")?.toInt() ?: prefs.getInt("user_character_index", 1)
                         val characterDrawableId = when (characterIndex) {
                             1 -> R.drawable.ch1
                             2 -> R.drawable.ch2
@@ -84,10 +74,8 @@ class HomeActivity : BaseActivity() {
                             else -> R.drawable.ch1
                         }
 
-                        // تحديث SharedPreferences بالبيانات الجديدة
+                        // احفظ القيم في SharedPreferences للتشغيل بدون نت لاحقًا
                         prefs.edit()
-                            .putInt("last_unlocked_card", lastUnlockedCard)
-                            .putInt("last_completed_card", lastCompletedCard)
                             .putInt("game_score", score)
                             .putString("user_name", userName)
                             .putString("user_email", userEmail)
@@ -102,10 +90,12 @@ class HomeActivity : BaseActivity() {
                             .replace(R.id.fragment_container, Above6AgeFragment())
                             .commit()
 
-                        hideLoading() // إخفاء اللودينغ عند الانتهاء
+                        hideLoading()
                     }
                     .addOnFailureListener {
-                        Toast.makeText(this, "فشل استرجاع بيانات المستخدم", Toast.LENGTH_SHORT).show()
+                        // فشل في الاتصال، استخدم البيانات المحلية
+                        Toast.makeText(this, "فشل استرجاع بيانات المستخدم، سيتم تحميل البيانات المحلية.", Toast.LENGTH_SHORT).show()
+
                         updateScore()
                         showAbove6Profile(profileImage, childName, childEmail)
 
@@ -116,7 +106,7 @@ class HomeActivity : BaseActivity() {
                         hideLoading()
                     }
             } else {
-                // حال عدم وجود uid، اعرض البيانات المخزنة محليًا فقط
+                // لا يوجد uid، اعتمد على البيانات المحلية
                 updateScore()
                 showAbove6Profile(profileImage, childName, childEmail)
 
@@ -128,7 +118,6 @@ class HomeActivity : BaseActivity() {
             }
         }
 
-        // 5. فتح القائمة عند الضغط على الأيقونة
         menuIcon.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.END)
         }
@@ -144,7 +133,7 @@ class HomeActivity : BaseActivity() {
         loadingOverlaylayout.visibility = FrameLayout.GONE
     }
 
-    private fun updateScore() {
+    fun updateScore() {
         val score = prefs.getInt("game_score", 0)
         tvScore.text = "عدد النجــوم التي حصلت عليــها : $score"
         sendScoreToUnity(score)
@@ -190,7 +179,7 @@ class HomeActivity : BaseActivity() {
         val userEmail = prefs.getString("user_email", "").orEmpty()
 
         image.setImageResource(imgId)
-        name.text = userName
+        name.text = userName.ifEmpty { "بدون اسم" }
         email.text = userEmail
         email.visibility = TextView.VISIBLE
     }

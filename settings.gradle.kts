@@ -20,4 +20,10 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Final3"
-include(":app", ":unityLibrary")
+include(":app",
+    ":coloringGameLibrary",
+    ":cardsGameLibrary",
+    ":connectionGameLibrary",
+    ":puzzleGameLibrary",
+    ":puzzleShGameLibrary"
+)

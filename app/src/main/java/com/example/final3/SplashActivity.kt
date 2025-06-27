@@ -12,8 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 
 class SplashActivity : AppCompatActivity() {
 
-    private var mediaPlayer: MediaPlayer? = null
+    private var laughPlayer: MediaPlayer? = null
     private var handler: Handler? = null
+
     override fun onPause() {
         super.onPause()
         GameMusicService.pauseMusic()
@@ -24,30 +25,35 @@ class SplashActivity : AppCompatActivity() {
         GameMusicService.resumeMusic()
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         supportActionBar?.hide()
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
+        // (اختياري) قراءة نوع المستخدم
         val prefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val userType = prefs.getString("user_type", null)
         Log.d("esraa", userType.toString())
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.kids)
-        mediaPlayer?.start()
+        // تشغيل صوت الضحك أول ما تفتح الشاشة
+        laughPlayer = MediaPlayer.create(this, R.raw.kids)
+        laughPlayer?.start()
 
         handler = Handler(Looper.getMainLooper())
         handler?.postDelayed({
+            // أوقف صوت الضحك وحرر الميديا بلاير
             try {
-                mediaPlayer?.stop()
+                laughPlayer?.stop()
             } catch (_: Exception) {
             }
-            mediaPlayer?.release()
-            mediaPlayer = null
+            laughPlayer?.release()
+            laughPlayer = null
 
+            // شغّل موسيقى الخلفية بعد انتهاء الضحك
             startService(Intent(this, GameMusicService::class.java))
 
+            // انتقل للشاشة التالية
             startActivity(Intent(this, WelcomeActivity::class.java))
             finish()
         }, 5000)
@@ -56,7 +62,11 @@ class SplashActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         handler?.removeCallbacksAndMessages(null)
-        mediaPlayer?.release()
-        mediaPlayer = null
+        try {
+            laughPlayer?.stop()
+        } catch (_: Exception) {
+        }
+        laughPlayer?.release()
+        laughPlayer = null
     }
 }

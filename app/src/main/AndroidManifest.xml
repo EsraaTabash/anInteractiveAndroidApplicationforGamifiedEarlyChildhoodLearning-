@@ -145,7 +145,39 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name="com.unity3d.player.UnityPlayerActivity"
+            android:name="com.unity3d.player.CardsGameActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:process=":unity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            tools:replace="android:configChanges,android:launchMode,android:theme" />
+        <activity
+            android:name="com.unity3d.player.ColoringGameActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:process=":unity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            tools:replace="android:configChanges,android:launchMode,android:theme" />
+        <activity
+            android:name="com.unity3d.player.ConnectionGameActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:process=":unity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            tools:replace="android:configChanges,android:launchMode,android:theme" />
+        <activity
+            android:name="com.unity3d.player.PuzzleGameActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:process=":unity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            tools:replace="android:configChanges,android:launchMode,android:theme" />
+        <activity
+            android:name="com.unity3d.player.PuzzleShGameActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="true"
             android:launchMode="singleTop"

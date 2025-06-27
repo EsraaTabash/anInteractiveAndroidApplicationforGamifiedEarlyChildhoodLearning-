@@ -40,33 +40,72 @@ class WelcomeActivity : AppCompatActivity() {
         val lastStone: ImageView = findViewById(R.id.last_stone)
         val moon: ImageView = findViewById(R.id.moon)
 
+        // ابدأ بتصفير جميع العناصر
+        character1.translationX = -800f
+        character1.translationY = 800f
+        character1.alpha = 1f
+        textView1.alpha = 1f
+
+        val stones = listOf(firstStone, leftStone, rightStone, lastStone)
+        stones.forEach {
+            it.translationY = 400f
+            it.alpha = 0f
+        }
+        moon.translationY = -400f
+        moon.alpha = 0f
+
         textView1.visibility = View.VISIBLE
         character1.visibility = View.VISIBLE
+        stones.forEach { it.visibility = View.VISIBLE }
+        moon.visibility = View.VISIBLE
 
-        // المرحلة 1: تحريك character1 والصخور معًا
-        val moveCharacter1X = ObjectAnimator.ofFloat(character1, "translationX", -400f)
-        val moveCharacter1Y = ObjectAnimator.ofFloat(character1, "translationY", 576f)
-        val moveFirstStone = ObjectAnimator.ofFloat(firstStone, "translationX", 0f)
-        val moveLeftStone = ObjectAnimator.ofFloat(leftStone, "translationX", 0f)
-        val moveRightStone = ObjectAnimator.ofFloat(rightStone, "translationX", 0f)
-        val moveLastStone = ObjectAnimator.ofFloat(lastStone, "translationX", 0f)
-        val moveMoon = ObjectAnimator.ofFloat(moon, "translationX", 0f)
-
-        val moveSet = AnimatorSet().apply {
+        val charAnimSet = AnimatorSet().apply {
             playTogether(
-                moveCharacter1X, moveCharacter1Y, moveFirstStone,
-                moveLeftStone, moveRightStone, moveLastStone, moveMoon
+                ObjectAnimator.ofFloat(character1, "translationX", 0f),
+                ObjectAnimator.ofFloat(character1, "translationY", 0f)
             )
-            duration = 1200
+            duration = 1000
             interpolator = DecelerateInterpolator()
-
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
-                    fadeOutCharacter1AndText(textView1, character1)
+                    animateStonesIn(stones, moon, textView1, character1)
                 }
             })
         }
-        moveSet.start()
+        charAnimSet.start()
+    }
+
+    private fun animateStonesIn(
+        stones: List<ImageView>,
+        moon: ImageView,
+        textView1: TextView,
+        character1: ImageView
+    ) {
+        // 2. حركات الصخور بشكل متسلسل مع قليل من التأخير
+        for ((i, stone) in stones.withIndex()) {
+            stone.postDelayed({
+                stone.animate()
+                    .translationY(0f)
+                    .alpha(1f)
+                    .setDuration(700)
+                    .setInterpolator(DecelerateInterpolator())
+                    .start()
+            }, (i * 120).toLong())
+        }
+
+        // 3. القمر يظهر بعد الصخور بقليل
+        moon.postDelayed({
+            moon.animate()
+                .translationY(0f)
+                .alpha(1f)
+                .setDuration(700)
+                .setInterpolator(DecelerateInterpolator())
+                .withEndAction {
+                    // fadeout النص والشخصية ثم انتقل للمرحلة 2
+                    fadeOutCharacter1AndText(textView1, character1)
+                }
+                .start()
+        }, 600)
     }
 
     private fun fadeOutCharacter1AndText(textView1: TextView, character1: ImageView) {
@@ -208,7 +247,7 @@ class WelcomeActivity : AppCompatActivity() {
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
                     val intent = Intent(this@WelcomeActivity, HelloActivity::class.java)
-                    startActivity(intent)
+                   startActivity(intent)
                     finish()
                 }
             })
