@@ -110,8 +110,10 @@ class SelectCharacterActivity : AppCompatActivity() {
                     "email" to email,
                     "name" to name,
                     "character_id" to selectedCharacterId,
-                    "gameId" to gameId
+                    "gameId" to gameId,
+                    "score" to 0
                 )
+
 
                 FirebaseFirestore.getInstance().collection("users").document(uid)
                     .set(userData)

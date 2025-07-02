@@ -125,14 +125,17 @@
                     prefs.putInt("character_id", document.getLong("character_id")?.toInt() ?: 1)
                     prefs.putString("user_email", document.getString("email") ?: "")
                     prefs.putString("user_type", document.getString("user_type") ?: "above6")
-                    prefs.apply()
+                    prefs.putInt("game_score", document.getLong("score")?.toInt() ?: 0)
+                    prefs.putInt("last_unlocked_card", document.getLong("gameId")?.toInt() ?: 0)
 
+                    prefs.apply()
                     goToHome()
                 }
                 .addOnFailureListener {
                     goToHome()
                 }
         }
+
 
         private fun handleLoginErrors(exception: Exception?) {
             emailFieldLayout.error = null

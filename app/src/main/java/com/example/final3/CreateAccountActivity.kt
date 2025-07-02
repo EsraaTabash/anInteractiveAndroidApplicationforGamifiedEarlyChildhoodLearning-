@@ -46,6 +46,14 @@ open class CreateAccountActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private val RC_SIGN_IN = 9001
 
+    override fun onPause() {
+        super.onPause()
+        GameMusicService.pauseMusic()
+    }
+    override fun onResume() {
+        super.onResume()
+        GameMusicService.resumeMusic()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)

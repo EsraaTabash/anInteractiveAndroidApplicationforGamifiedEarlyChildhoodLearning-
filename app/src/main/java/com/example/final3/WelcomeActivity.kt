@@ -162,8 +162,8 @@ class WelcomeActivity : AppCompatActivity() {
         val moveRightStoneX = ObjectAnimator.ofFloat(rightStone, "translationX", -150f)
         val moveRightStoneY = ObjectAnimator.ofFloat(rightStone, "translationY", 0f)
 
-        val moveLastStoneX = ObjectAnimator.ofFloat(lastStone, "translationX", -200f)
-        val moveLastStoneY = ObjectAnimator.ofFloat(lastStone, "translationY", 0f)
+        val moveLastStoneX = ObjectAnimator.ofFloat(lastStone, "translationX", -100f)
+        val moveLastStoneY = ObjectAnimator.ofFloat(lastStone, "translationY", 100f)
 
         AnimatorSet().apply {
             playTogether(

@@ -16,7 +16,7 @@
 local.properties
 
 # Unity
-[Ll]ibrary/
+# [Ll]ibrary/    <--- علّق أو احذف هذا السطر مؤقتاً فقط
 [Tt]emp/
 [Oo]bj/
 [Bb]uild/

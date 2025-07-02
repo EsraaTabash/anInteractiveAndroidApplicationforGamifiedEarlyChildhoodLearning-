@@ -11,11 +11,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/cardsGameLibrary" />
-            <option value="$PROJECT_DIR$/coloringGameLibrary" />
-            <option value="$PROJECT_DIR$/connectionGameLibrary" />
-            <option value="$PROJECT_DIR$/puzzleGameLibrary" />
-            <option value="$PROJECT_DIR$/puzzleShGameLibrary" />
+            <option value="$PROJECT_DIR$/unityLibrary" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

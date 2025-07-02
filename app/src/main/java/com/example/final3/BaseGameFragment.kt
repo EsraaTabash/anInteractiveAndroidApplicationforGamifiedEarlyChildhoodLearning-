@@ -34,7 +34,6 @@ abstract class BaseGameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         loadingOverlaylayout = view.findViewById(R.id.loadingOverlaylayout)
         loadingRocket = view.findViewById(R.id.loadingRocket)
 
@@ -206,29 +205,12 @@ abstract class BaseGameFragment : Fragment() {
         val prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val userType = prefs.getString("user_type", "under6") ?: "under6"
 
-        // index من 0، بينما الكروت تبدأ من 1 عندك، لذلك استخدم gameId-1 لو تحب حسب الترتيب
-        val intent = when (userType) {
-            "under6" -> when (gameId) {
-                1 -> Intent(requireContext(), com.unity3d.player.ColoringGameActivity::class.java)
-                2 -> Intent(requireContext(), com.unity3d.player.ConnectionGameActivity::class.java)
-                3 -> Intent(requireContext(), com.unity3d.player.PuzzleShGameActivity::class.java)
-                4 -> Intent(requireContext(), com.unity3d.player.ConnectionGameActivity::class.java)
-                5 -> Intent(requireContext(), com.unity3d.player.PuzzleShGameActivity::class.java)
-                else -> Intent(requireContext(), com.unity3d.player.ColoringGameActivity::class.java)
-            }
-            else -> when (gameId) {
-                1 -> Intent(requireContext(), com.unity3d.player.ColoringGameActivity::class.java)
-                2 -> Intent(requireContext(), com.unity3d.player.CardsGameActivity::class.java)
-                3 -> Intent(requireContext(), com.unity3d.player.PuzzleGameActivity::class.java)
-                4 -> Intent(requireContext(), com.unity3d.player.CardsGameActivity::class.java)
-                5 -> Intent(requireContext(), com.unity3d.player.PuzzleGameActivity::class.java)
-                else -> Intent(requireContext(), com.unity3d.player.ColoringGameActivity::class.java)
-            }
-        }
-        // إذا تحتاج ترسل داتا معينة، عدل هنا
+        // الكل يذهب لنفس الـ Activity
+        val intent = Intent(requireContext(), com.unity3d.player.UnityPlayerActivity::class.java)
         intent.putExtra("unityData", "${getCardPrefix()} card number is: $gameId")
         startActivityForResult(intent, UNITY_REQUEST_CODE)
     }
+
 
 
     private fun updateGameIdToCloud(gameId: Int) {
@@ -269,7 +251,6 @@ abstract class BaseGameFragment : Fragment() {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-    // هنا نجلب السكور من اللعبة، ونخزنه ونرفعه للفيرستور إذا Above6
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == UNITY_REQUEST_CODE && resultCode == RESULT_OK) {
             val scoreFromUnity = data?.getIntExtra("score", -1) ?: -1
@@ -278,25 +259,35 @@ abstract class BaseGameFragment : Fragment() {
                 val prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
                 val previousScore = prefs.getInt("game_score", 0)
                 val updatedScore = previousScore + scoreFromUnity
+                val userType = prefs.getString("user_type", "under6") ?: "under6"
+
+                // احسب آخر تقدم حقيقي للطفل
+                val lastUnlockedCard = lastPlayedCardIndex + 1
+                if (lastUnlockedCard > prefs.getInt("last_unlocked_card", 0)) {
+                    prefs.edit().putInt("last_unlocked_card", lastUnlockedCard).apply()
+                }
+
                 prefs.edit().putInt("game_score", updatedScore).apply()
                 score = updatedScore
 
                 showToast("نتيجتك في اللعبة: $scoreFromUnity 🎮")
                 updateScoreUI(updatedScore)
 
-                // رفع السكور على Firestore
-                val userType = prefs.getString("user_type", "under6") ?: "under6"
+                // حدث Firestore دفعة واحدة لو الطفل كبير
                 if (userType != "under6") {
                     val uid = FirebaseAuth.getInstance().currentUser?.uid
                     if (uid != null) {
-                        val dataToUpdate = mapOf("score" to updatedScore)
+                        val dataToUpdate = mapOf(
+                            "score" to updatedScore,
+                            "gameId" to lastUnlockedCard
+                        )
                         FirebaseFirestore.getInstance().collection("users").document(uid)
                             .update(dataToUpdate)
                             .addOnSuccessListener {
-                                Log.d("BaseGameFragment", "تم تحديث السكور على Firestore")
+                                Log.d("BaseGameFragment", "تم تحديث السكور والتقدم معًا على Firestore")
                             }
                             .addOnFailureListener { e ->
-                                Log.e("BaseGameFragment", "فشل تحديث السكور على Firestore", e)
+                                Log.e("BaseGameFragment", "فشل تحديث البيانات على Firestore", e)
                             }
                     }
                 }
@@ -326,6 +317,7 @@ abstract class BaseGameFragment : Fragment() {
     }
 
     override fun onPause() {
+
         super.onPause()
         GameMusicService.pauseMusic()
     }
@@ -333,7 +325,6 @@ abstract class BaseGameFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         GameMusicService.resumeMusic()
-        // عند العودة، أعرض السكور المحلي بشكل أكيد
         updateScoreUI(score)
     }
 }
