@@ -2,12 +2,7 @@
 *.iml
 .gradle
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+/.idea/
 .DS_Store
 /build
 /captures
@@ -15,8 +10,8 @@
 .cxx
 local.properties
 
-# Unity
-# [Ll]ibrary/    <--- علّق أو احذف هذا السطر مؤقتاً فقط
+# Unity (مع إبقاء Library ضمن unityLibrary فقط)
+# [Ll]ibrary/    <--- يظل معلق أو احذفه
 [Tt]emp/
 [Oo]bj/
 [Bb]uild/
@@ -34,7 +29,7 @@ local.properties
 *.booproj
 *.svd
 
-# Exclude build folders in all modules
+# Exclude build folders in all modules (تأكد أن unityLibrary/build مش ضروري)
 **/build/
 **/Build/
 **/builds/
@@ -49,3 +44,6 @@ local.properties
 *.zip
 *.rar
 *.tar.gz
+
+# Allow unityLibrary/Library (remove if previously ignored)
+!unityLibrary/Library/
