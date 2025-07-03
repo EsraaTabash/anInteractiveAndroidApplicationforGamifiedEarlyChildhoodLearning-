@@ -176,5 +176,4 @@ public class UnityPlayerActivity extends Activity implements IUnityPlayerLifecyc
         resultIntent.putExtra("score", score);
         setResult(RESULT_OK, resultIntent);
         finish();
-    }
-}
+    }}
