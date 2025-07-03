@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-//apply from: '../shared/keepUnitySymbols.gradle'
+apply from: '../shared/keepUnitySymbols.gradle'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -43,7 +43,7 @@ android {
 
     androidResources {
         ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"
-//        noCompress = ['.unity3d', '.ress', '.resource', '.obb', '.bundle', '.unityexp'] + unityStreamingAssets.tokenize(', ')
+        noCompress = ['.unity3d', '.ress', '.resource', '.obb', '.bundle', '.unityexp'] + unityStreamingAssets.tokenize(', ')
     }
 
     packaging {
@@ -162,4 +162,4 @@ android.externalNativeBuild {
 }
 android.buildFeatures {
     prefab true
-}
+}
