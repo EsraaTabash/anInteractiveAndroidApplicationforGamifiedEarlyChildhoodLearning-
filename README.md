@@ -29,7 +29,7 @@ You can explore the full user interface design and prototypes on Figma:
 ## 📑 Application README File
 
 For details on how to run, install, or use the application, you can also check the detailed README file from the following link:  
-[**Download Application README**](https://drive.google.com/file/d/1jcKuoDquaXsC3iTMOqRZRZWDuplyb3mR/view?usp=sharing)
+[**Download Application README**](https://drive.google.com/file/d/1N0gfXHTVhTgygwWdYoWmQVZ5LsA_dnKh/view?usp=sharing)
 
 ---
 
